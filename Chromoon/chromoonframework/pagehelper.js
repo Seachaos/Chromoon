@@ -19,9 +19,24 @@ SOFTWARE.
 */
 
 function Chromoon(){
-	
+	this.packageName = window._chromoon_packageName;
+	window._chromoon_packageName = null;
+	window._chromoon = window._chromoon || [];
+	window._chromoon[this.packageName] = this;
+	this.state = {};	
+}
+window._Chromoon_setState = function(packageName, data){
+	if(!window._chromoon){ return; }
+	var chromoon = window._chromoon[packageName];
+	if(!chromoon){ return; }
+	chromoon.setState(data);
 }
 
-window._chromoon_font = new Chromoon();
+Chromoon.prototype.setState = function(arg){
+	this.state = arg;
+}
+
+var chromoon = new Chromoon();
+
 
 // chrome.runtime.sendMessage(arg);

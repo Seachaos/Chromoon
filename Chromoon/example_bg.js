@@ -19,6 +19,14 @@ SOFTWARE.
 */
 // EXAMPLE Background JS
 
-Chromoon.onPageFinished(function(chromoon){
-	alert('Success:' + chromoon);
+var chromoon = new Chromoon();
+chromoon.packageName = 'test_example';
+
+chromoon.setState({
+	value : 'Hi'
+});
+
+chromoon.onPageFinished(function(chromoon){
+	alert('Success:' + chromoon.state.value);
+	alert(window.location.href);
 });
