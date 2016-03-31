@@ -18,15 +18,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 // EXAMPLE Background JS
-
-var chromoon = new Chromoon();
 chromoon.packageName = 'test_example';
-
 chromoon.setState({
 	value : 'Hi'
 });
 
+chromoon.onStateChange(function(chromoon, state){
+	console.log('STATE CHANGE!');
+	console.log(state);
+});
+
+chromoon.onStateChangeFromListener(function(chromoon, state){
+	console.log('STATE CHANGE FROM LISTENER!');
+	console.log(state);
+});
+
 chromoon.onPageFinished(function(chromoon){
-	alert('Success:' + chromoon.state.value);
-	alert(window.location.href);
+	// alert('Success:' + chromoon.state.value);
+	// alert(window.location.href);
 });

@@ -34,6 +34,14 @@ function Chromoon(){
 	window._chromoon = _chromoonarray;
 };
 
+// comm
+function _Chromoon_check_tab(tab){
+	if(tab.id==-1){ return false; }
+	if(tab.url.indexOf('http')==-1){ return false; }
+	if(!tab.active){ return false; }
+	return true;
+}
+
 Chromoon.prototype.main = function(){
 
 }
@@ -45,11 +53,19 @@ Chromoon.prototype.onPageComplete =  function (){
 	}
 }
 
+Chromoon.prototype.onPageExec = function(arg){
+	this._runMethodOnPage(arg);
+}
+
+Chromoon.prototype.onPopExec = function(arg){
+
+}
+
 Chromoon.prototype._runMethodOnPage = function(page_method){
 	var me = this;
 	var packageName = me.packageName;
 	chrome.tabs.getSelected(null, function(tab) {
-		if(tab.id==-1){ return; }
+		if(!_Chromoon_check_tab(tab)){ return; }
 		me._sendStateToPage(me.state, function(){
 			// warp method
 			var callback_obj = "window._chromoon[\""+packageName+"\"]";
@@ -63,16 +79,50 @@ Chromoon.prototype._runMethodOnPage = function(page_method){
 	});
 }
 
-Chromoon.prototype.setState = function(state){
-	this.state = state;
-	this._sendStateToPage(state);
+Chromoon.prototype.setState = function(newState){
+	this._megerState(newState);
+	// send state to Pop
+	this._sendDataToChromeMessage('_set_data_for_pop', this.state);
+	// send state to page
+	this._sendStateToPage(this.state);
+	// on state change
+	this._onStateChange();
 }
 
+Chromoon.prototype._megerState = function(newState){
+	for(i in newState){
+		this.state[i] = newState[i];
+	}
+}
+
+// comm
+Chromoon.prototype._onStateChange = function(){
+	if(this._onStateChange_arg){
+		this._onStateChange_arg(this, this.state);
+	}
+}
+// comm
+Chromoon.prototype.onStateChange = function(arg){
+	this._onStateChange_arg = arg;
+}
+// comm
+Chromoon.prototype.onStateChangeFromListener = function(arg){
+	this._onStateChangeFromListener = arg;
+}
+// comm
+Chromoon.prototype._sendDataToChromeMessage = function(action, data){
+	chrome.runtime.sendMessage({
+        action: action,
+        source: data
+    });
+}
+
+// comm
 Chromoon.prototype._sendStateToPage = function(state, callback){
 	var packageName = this.packageName;
 	var me = this;
 	chrome.tabs.getSelected(null, function(tab) {
-		if(tab.id==-1){ return; }
+		if(!_Chromoon_check_tab(tab)){ return; }
 		var code = JSON.stringify(state);
 		code = 'window._Chromoon_setState("'+packageName+'",'+code+')';
 		chrome.tabs.executeScript(tab.id, {
@@ -85,10 +135,12 @@ Chromoon.prototype._sendStateToPage = function(state, callback){
 	});
 }
 
+// comm
 Chromoon.prototype.pageExecuteScript = function(arg, callback){
 	var index = 0;
 	var me = this;
 	var run = function(tab){
+		if(!_Chromoon_check_tab(tab)){ return; }
 		var _arg = arg[index++];
 		if(_arg){
 			chrome.tabs.executeScript(tab.id, _arg, function(){
@@ -101,23 +153,38 @@ Chromoon.prototype.pageExecuteScript = function(arg, callback){
 		}
 	};
 	chrome.tabs.getSelected(null, function(tab) {
+		if(!_Chromoon_check_tab(tab)){ return; }
 		run.bind(me)(tab);
 	});
 };
-
+// comm
 Chromoon.prototype._loadHelperOnPage = function(){
 	this.pageExecuteScript([
 		{ code : 'window._chromoon_packageName="'+this.packageName+'"' },
+		{ file : 'chromoonframework/jquery.js' },
 		{ file : 'chromoonframework/pagehelper.js' }
 	], function(){
 		this.onPageComplete();
 	});
 }
-
+// comm
 Chromoon.prototype.onPageFinished = function(arg){
 	this.callback_onPageFinished = arg;
 }
 
+Chromoon.prototype._onMessage = function(request, sender) {
+	switch(request.action){
+		case '_set_data_for_bg':
+			this._megerState(request.source);
+			this._onStateChange();
+			if(this._onStateChangeFromListener){ this._onStateChangeFromListener(this, this.state); };
+			break;
+	}
+}
+
+var chromoon = new Chromoon();
+
+// comm
 chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
 	for(i in window._chromoon){
 		var _chromoon = window._chromoon[i];
@@ -126,7 +193,8 @@ chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
 		}
 	}
 });
-document.addEventListener('DOMContentLoaded', function () {
-    
-})
+chrome.runtime.onMessage.addListener(function(request, sender) {
+	chromoon._onMessage(request, sender);
+});
+
 
