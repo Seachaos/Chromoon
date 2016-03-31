@@ -57,15 +57,14 @@ Chromoon.prototype._sendDataToChromeMessage = function(action, data){
 Chromoon.prototype._sendStateToPage = function(state, callback){
 	var packageName = this.packageName;
 	var me = this;
-	chrome.tabs.getSelected(null, function(tab) {
-		if(!_Chromoon_check_tab(tab)){ return; }
+	this._loadHelperOnPage(function(tab){
 		var code = JSON.stringify(state);
 		code = 'window._Chromoon_setState("'+packageName+'",'+code+')';
 		chrome.tabs.executeScript(tab.id, {
 			code : code
 		}, function(){
 			if(callback){
-				callback.bind(me)();
+				callback.bind(me)(tab);
 			}
 		});
 	});
@@ -84,7 +83,7 @@ Chromoon.prototype.pageExecuteScript = function(arg, callback){
 			});
 		}else{
 			if(callback){
-				callback.bind(me)();
+				callback.bind(me)(tab);
 			}
 		}
 	};
@@ -94,14 +93,26 @@ Chromoon.prototype.pageExecuteScript = function(arg, callback){
 	});
 };
 // comm
-Chromoon.prototype._loadHelperOnPage = function(){
-	this.pageExecuteScript([
+Chromoon.prototype._getBasicPageScripts = function(){
+	return [
 		{ code : 'window._chromoon_packageName="'+this.packageName+'"' },
 		{ file : 'chromoonframework/jquery.js' },
 		{ file : 'chromoonframework/pagehelper.js' },
 		{ file : 'chromoonframework/chromoon.js' }
-	], function(){
-		this.onPageComplete();
+	];
+}
+Chromoon.prototype._loadHelperOnPage = function(arg){
+	if(this._loadHelperOnPage_ok){
+		var me = this;
+		chrome.tabs.getSelected(null, function(tab) {
+			if(!_Chromoon_check_tab(tab)){ return; }
+			arg.bind(me)(tab);
+		});
+		return;
+	}
+	var me = this;
+	this.pageExecuteScript(this._getBasicPageScripts(), function(tab){
+		arg.bind(this)(tab);
 	});
 }
 // comm
@@ -128,17 +139,14 @@ Chromoon.prototype._megerState = function(newState){
 Chromoon.prototype._runMethodOnPage = function(page_method){
 	var me = this;
 	var packageName = me.packageName;
-	chrome.tabs.getSelected(null, function(tab) {
-		if(!_Chromoon_check_tab(tab)){ return; }
-		me._sendStateToPage(me.state, function(){
-			// warp method
-			var callback_obj = "window._chromoon[\""+packageName+"\"]";
-			var code = "(" + page_method.toString() + page_method.name + "(" + callback_obj+ "))";
-			chrome.tabs.executeScript(tab.id, {
-				code : code
-			}, function(){
+	this._sendStateToPage(me.state, function(tab){
+		// warp method
+		var callback_obj = "window._chromoon[\""+packageName+"\"]";
+		var code = "(" + page_method.toString() + page_method.name + "(" + callback_obj+ "))";
+		chrome.tabs.executeScript(tab.id, {
+			code : code
+		}, function(){
 
-			});
 		});
 	});
 }
@@ -150,7 +158,7 @@ if(chrome){
 			for(i in window._chromoon){
 				var _chromoon = window._chromoon[i];
 				if (changeInfo.status == 'complete') {
-					_chromoon._loadHelperOnPage();
+					_chromoon.onPageComplete();
 					_chromoon._sendDataToChromeMessage('_page_complete', {})
 				}
 			}

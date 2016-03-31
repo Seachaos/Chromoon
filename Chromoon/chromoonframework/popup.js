@@ -51,7 +51,7 @@ Chromoon.prototype._onMessage = function(request, sender) {
 			if(this._onStateChangeFromListener){ this._onStateChangeFromListener(this, this.state); };
 			break;
 		case '_page_complete':
-			this._loadHelperOnPage();
+			this.onPageComplete();
 			break;
 	}
 }
