@@ -16,7 +16,7 @@
   ],
   "background": {
     "scripts": [
-      "chromoonframework/jquery.js", "chromoonframework/background.js",
+      "chromoonframework/jquery.js", "chromoonframework/background.js", "chromoonframework/chromoon.js",
       "example_bg.js" ]
   }
 }

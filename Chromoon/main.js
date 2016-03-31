@@ -6,9 +6,16 @@ chromoon.setState({
 
 chromoon.onPopReady(function(chromoon){
 	
-	$('#btn').click(function(){
+	$('#test_state_change').click(function(){
 		chromoon.setState({
-			formPop : '123321'
+			formPop : 'test_state_change'
+		})
+	});
+
+	$('#show_alert_on_page').click(function(){
+		chromoon.onPageExec(function(chromoon){
+			alert('here is call by pop!');
+			console.log(chromoon.state);
 		})
 	});
 });
@@ -21,4 +28,9 @@ chromoon.onStateChange(function(chromoon, state){
 chromoon.onStateChangeFromListener(function(chromoon, state){
 	console.log('STATE CHANGE FROM LISTENER!');
 	console.log(state);
+});
+
+chromoon.onPageFinished(function(chromoon){
+	// this code is run on font, using chromoon.setState for return data
+	console.log('page finished. from pop');
 });

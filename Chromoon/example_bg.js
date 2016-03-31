@@ -17,10 +17,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 // EXAMPLE Background JS
 chromoon.packageName = 'test_example';
+
 chromoon.setState({
-	value : 'Hi'
+	value_from_bg : 'Hi'
 });
 
 chromoon.onStateChange(function(chromoon, state){
@@ -34,6 +36,6 @@ chromoon.onStateChangeFromListener(function(chromoon, state){
 });
 
 chromoon.onPageFinished(function(chromoon){
-	// alert('Success:' + chromoon.state.value);
-	// alert(window.location.href);
+	// this code is run on font, using chromoon.setState for return data
+	console.log('page finished. from bg');
 });
