@@ -33,4 +33,7 @@ chromoon.onStateChange(function(chromoon, state){
 chromoon.onStateChangeFromListener(function(chromoon, state){
 	console.log('STATE CHANGE FROM LISTENER ON PAGE!');
 	console.log(state);
+	chromoon.setState({
+		FromPageValue : 'Good'
+	});
 });

@@ -37,15 +37,17 @@ window._Chromoon_setState = function(packageName, data){
 	chromoon = window._chromoon;
 	chromoon._megerState(data);
 	chromoon._onStateChange();
+	if(chromoon._onStateChangeFromListener){
+		chromoon._onStateChangeFromListener(chromoon, chromoon.state);
+	};
 }
 
 Chromoon.prototype.setState = function(newState){
+	console.log('Chromoon.prototype.setState');
 	this._megerState(newState);
 	// send state to Pop
 	this._sendDataToChromeMessage('_set_data_for_pop', this.state);
 	this._sendDataToChromeMessage('_set_data_for_bg', this.state);
-	// send state to page
-	this._sendStateToPage(this.state);
 	// on state change
 	this._onStateChange();
 }

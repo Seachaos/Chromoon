@@ -159,7 +159,8 @@ Chromoon.prototype._runMethodOnPage = function(page_method){
 	var packageName = me.packageName;
 	this._sendStateToPage(me.state, function(tab){
 		// warp method
-		var callback_obj = "window._chromoon[\""+packageName+"\"]";
+		// var callback_obj = "window._chromoon[\""+packageName+"\"]";
+		var callback_obj = "window._chromoon";
 		var code = "(" + page_method.toString() + page_method.name + "(" + callback_obj+ "))";
 		chrome.tabs.executeScript(tab.id, {
 			code : code
