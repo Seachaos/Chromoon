@@ -58,8 +58,11 @@ Chromoon.prototype._onMessage = function(request, sender) {
 			this._onStateChange();
 			if(this._onStateChangeFromListener){ this._onStateChangeFromListener(this, this.state); };
 			break;
+		case '_give_me_state_for_pop':
+			this._sendDataToChromeMessage('_set_data_for_pop', this.state);
+			break;
 	}
 }
 
-var chromoon = new Chromoon();
+var chromoon = chromoon || new Chromoon();
 

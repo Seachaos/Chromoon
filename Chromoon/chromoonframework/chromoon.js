@@ -97,7 +97,7 @@ Chromoon.prototype._getBasicPageScripts = function(){
 	return [
 		{ code : 'window._chromoon_packageName="'+this.packageName+'"' },
 		{ file : 'chromoonframework/jquery.js' },
-		{ file : 'chromoonframework/pagehelper.js' },
+		{ file : 'chromoonframework/page.js' },
 		{ file : 'chromoonframework/chromoon.js' }
 	];
 }
@@ -124,10 +124,28 @@ Chromoon.prototype.onPageFinished = function(arg){
 Chromoon.prototype.onPageComplete =  function (){
 	// if has page finish callback, call it
 	if(this.callback_onPageFinished){
-		this._runMethodOnPage(this.callback_onPageFinished);
+		if(this._onPageLoadScript){
+			var scripts = this._getBasicPageScripts();
+			for(i in this._onPageLoadScript){
+				var obj = this._onPageLoadScript[i];
+				scripts.push(obj);
+			}
+			this.pageExecuteScript(scripts, function(tab){
+				this._runMethodOnPage(this.callback_onPageFinished);
+			});
+		}else{
+			this._runMethodOnPage(this.callback_onPageFinished);
+		}
 	}
 }
 
+Chromoon.prototype.onPageLoadScript = function(arg){
+	var objs = [];
+	for(i in arg){
+		objs.push({file: arg[i]});
+	}
+	this._onPageLoadScript = objs;
+}
 
 // comm
 Chromoon.prototype._megerState = function(newState){
@@ -149,6 +167,10 @@ Chromoon.prototype._runMethodOnPage = function(page_method){
 
 		});
 	});
+}
+
+if(chromoon._chromoonLoadReady){
+	chromoon._chromoonLoadReady();
 }
 
 // comm

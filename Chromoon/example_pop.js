@@ -30,7 +30,11 @@ chromoon.onStateChangeFromListener(function(chromoon, state){
 	console.log(state);
 });
 
+
+/**********************/
+chromoon.onPageLoadScript(['example_page.js']);
 chromoon.onPageFinished(function(chromoon){
-	// this code is run on font, using chromoon.setState for return data
+	// this code is run on font page, using chromoon.setState for return data
 	console.log('page finished. from pop');
+	example_script_on_page_call();
 });

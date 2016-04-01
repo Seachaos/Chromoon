@@ -22,12 +22,16 @@ function Chromoon(){
 	this._onPopReady = false;
 	this.packageName = 'none';
 	this.state = {};
+	this._chromoonLoadReady = function(){
+		this._sendDataToChromeMessage('_give_me_state_for_pop', {});
+	};
 };
 
 Chromoon.prototype._domContentLoaded = function(){
 	if(this._onPopReady){
 		this._onPopReady(chromoon);
 	}
+	this.onPageComplete();
 }
 Chromoon.prototype.onPopReady = function(arg){
 	this._onPopReady = arg;
@@ -56,7 +60,7 @@ Chromoon.prototype._onMessage = function(request, sender) {
 	}
 }
 
-var chromoon = new Chromoon();
+var chromoon = chromoon || new Chromoon();
 
 
 document.addEventListener('DOMContentLoaded', function () {

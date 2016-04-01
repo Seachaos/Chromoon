@@ -19,24 +19,39 @@ SOFTWARE.
 */
 
 function Chromoon(){
-	this.packageName = window._chromoon_packageName;
-	window._chromoon_packageName = null;
-	window._chromoon = window._chromoon || [];
-	window._chromoon[this.packageName] = this;
-	this.state = {};	
+	/* if need package name */
+	// this.packageName = window._chromoon_packageName;
+	// window._chromoon_packageName = null;
+	// window._chromoon = window._chromoon || [];
+	// window._chromoon[this.packageName] = this;
+
+	this.packageName = 'none';
+	this.state = {};
 }
+
 window._Chromoon_setState = function(packageName, data){
-	if(!window._chromoon){ return; }
-	var chromoon = window._chromoon[packageName];
-	if(!chromoon){ return; }
-	chromoon.setState(data);
+	/* if need package name */
+	// if(!window._chromoon){ return; }
+	// var chromoon = window._chromoon[packageName];
+	// if(!chromoon){ return; }
+	chromoon = window._chromoon;
+	chromoon._megerState(data);
+	chromoon._onStateChange();
 }
 
-Chromoon.prototype.setState = function(arg){
-	this.state = arg;
+Chromoon.prototype.setState = function(newState){
+	this._megerState(newState);
+	// send state to Pop
+	this._sendDataToChromeMessage('_set_data_for_pop', this.state);
+	this._sendDataToChromeMessage('_set_data_for_bg', this.state);
+	// send state to page
+	this._sendStateToPage(this.state);
+	// on state change
+	this._onStateChange();
 }
 
-var chromoon = new Chromoon();
+var chromoon = chromoon || new Chromoon();
+window._chromoon = chromoon;
 
 
 // chrome.runtime.sendMessage(arg);
