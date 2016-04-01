@@ -14,6 +14,12 @@
     "tabs", "<all_urls>",
     "notifications"
   ],
+  "content_scripts": [
+    {
+      "matches": ["https://*","http://*"],
+      "js": ["chromoonframework/jquery.js", "chromoonframework/page.js", "chromoonframework/chromoon.js" ]
+    }
+  ],
   "background": {
     "scripts": [
       "chromoonframework/jquery.js", "chromoonframework/background.js", "chromoonframework/chromoon.js",

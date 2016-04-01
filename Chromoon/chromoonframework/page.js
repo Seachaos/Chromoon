@@ -25,6 +25,7 @@ function Chromoon(){
 	// window._chromoon = window._chromoon || [];
 	// window._chromoon[this.packageName] = this;
 
+	this.callback_onPageFinished = false;
 	this.packageName = 'none';
 	this.state = {};
 }
@@ -35,16 +36,19 @@ window._Chromoon_setState = function(packageName, data){
 	// var chromoon = window._chromoon[packageName];
 	// if(!chromoon){ return; }
 	chromoon = window._chromoon;
-	chromoon._megerState(data);
-	chromoon._onStateChange();
-	if(chromoon._onStateChangeFromListener){
-		chromoon._onStateChangeFromListener(chromoon, chromoon.state);
-	};
+	chromoon.setStateFromWindowArg(data);
 }
 
+Chromoon.prototype.setStateFromWindowArg = function(newState){
+	this._mergeState(newState);
+	this._onStateChange();
+	if(this._onStateChangeFromListener){
+		this._onStateChangeFromListener(this, this.state);
+	};
+}
 Chromoon.prototype.setState = function(newState){
 	console.log('Chromoon.prototype.setState');
-	this._megerState(newState);
+	this._mergeState(newState);
 	// send state to Pop
 	this._sendDataToChromeMessage('_set_data_for_pop', this.state);
 	this._sendDataToChromeMessage('_set_data_for_bg', this.state);

@@ -148,7 +148,7 @@ Chromoon.prototype.onPageLoadScript = function(arg){
 }
 
 // comm
-Chromoon.prototype._megerState = function(newState){
+Chromoon.prototype._mergeState = function(newState){
 	for(i in newState){
 		this.state[i] = newState[i];
 	}

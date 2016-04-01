@@ -36,7 +36,7 @@ Chromoon.prototype.onPopExec = function(arg){
 }
 
 Chromoon.prototype.setState = function(newState){
-	this._megerState(newState);
+	this._mergeState(newState);
 	// send state to Pop
 	this._sendDataToChromeMessage('_set_data_for_pop', this.state);
 	// send state to page
@@ -45,7 +45,7 @@ Chromoon.prototype.setState = function(newState){
 	this._onStateChange();
 }
 
-Chromoon.prototype._megerState = function(newState){
+Chromoon.prototype._mergeState = function(newState){
 	for(i in newState){
 		this.state[i] = newState[i];
 	}
@@ -54,7 +54,7 @@ Chromoon.prototype._megerState = function(newState){
 Chromoon.prototype._onMessage = function(request, sender) {
 	switch(request.action){
 		case '_set_data_for_bg':
-			this._megerState(request.source);
+			this._mergeState(request.source);
 			this._onStateChange();
 			if(this._onStateChangeFromListener){ this._onStateChangeFromListener(this, this.state); };
 			break;
