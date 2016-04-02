@@ -170,6 +170,18 @@ Chromoon.prototype._runMethodOnPage = function(page_method){
 	});
 }
 
+Chromoon.prototype.triggerChange = function(dom){
+	var event = document.createEvent("HTMLEvents");
+	event.initEvent('change', true, true);
+	if(dom.length){
+		dom.each(function(){
+			this.dispatchEvent(event);
+		});
+	}else{
+		dom.dispatchEvent(event);
+	}
+}
+
 if(chromoon._chromoonLoadReady){
 	chromoon._chromoonLoadReady();
 }
