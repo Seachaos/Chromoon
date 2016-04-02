@@ -16,7 +16,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://*","http://*"],
+      "matches": ["http://*/*", "https://*/*"],
       "js": ["chromoonframework/jquery.js", "chromoonframework/page.js", "chromoonframework/chromoon.js" ]
     }
   ],

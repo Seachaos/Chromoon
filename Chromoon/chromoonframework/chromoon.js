@@ -170,6 +170,35 @@ Chromoon.prototype._runMethodOnPage = function(page_method){
 	});
 }
 
+
+Chromoon.prototype.notify = function(msg, opt){
+	var obj = opt || {};
+	if(typeof(msg)=='string'){
+		obj.msg = msg;
+	}else{
+		for(i in msg){
+			obj[i] = msg[i];
+		}
+	}
+	obj.title = obj.title || "Notification";
+	if (!Notification) {
+		alert(obj.msg); 
+		return;
+	}
+	if (Notification.permission !== "granted"){
+		Notification.requestPermission();
+	}else {
+		var notification = new Notification(
+			obj.title, {
+				icon: obj.icon,
+				body: obj.msg,
+			});
+		if(obj.click){
+			notification.onclick = obj.click.bind(this, notification);
+		}
+	}
+}
+
 Chromoon.prototype.triggerChange = function(dom){
 	var event = document.createEvent("HTMLEvents");
 	event.initEvent('change', true, true);
@@ -185,6 +214,13 @@ Chromoon.prototype.triggerChange = function(dom){
 if(chromoon._chromoonLoadReady){
 	chromoon._chromoonLoadReady();
 }
+
+// request permission on page load
+document.addEventListener('DOMContentLoaded', function () {
+	if (Notification.permission !== "granted"){
+		Notification.requestPermission();
+	}
+});
 
 // comm
 if(chrome){

@@ -18,7 +18,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 chromoon.packageName = 'test_example';
 
 chromoon.setState({
@@ -34,11 +33,28 @@ chromoon.onPopReady(function(chromoon){
 	});
 
 	$('#show_alert_on_page').click(function(){
+		chromoon.notify('XD'); return;
 		chromoon.onPageExec(function(chromoon){
 			alert('here is call by pop!');
 			console.log(chromoon.state);
 		})
 	});
+
+	$('#notify_example').click(function(){
+		chromoon.notify({
+			title : 'Title',
+			msg : 'here is example message',
+			icon : 'images/ic_info_black_24dp_2x.png',
+			click : function(notify){
+				notify.close();
+			}
+		});
+	})
+	$('#notify_example_from_page').click(function(){
+		chromoon.setState(
+			{ action: 'show_notfiy_on_page' }
+		);
+	})
 });
 
 chromoon.onStateChange(function(chromoon, state){

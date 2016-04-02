@@ -33,6 +33,16 @@ chromoon.onStateChange(function(chromoon, state){
 chromoon.onStateChangeFromListener(function(chromoon, state){
 	console.log('STATE CHANGE FROM LISTENER!');
 	console.log(state);
+
+
+	// demo for receve action
+	switch(state.action){
+		case 'show_notfiy_on_page':
+			chromoon.notify('Here is notify from example_bg.js');
+			// clear action
+			chromoon.setState({action : 'none' });
+			break;
+	}
 });
 
 /**********************/
