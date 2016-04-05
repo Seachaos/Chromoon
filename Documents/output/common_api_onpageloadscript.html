@@ -1,0 +1,56 @@
+<html>
+	<head>
+	<style>
+	html, body { height: 100%; width: 100%; margin: 0; background: #F0F0F0; }
+	#menu_left{
+		width:20%;
+		height:100%;
+		background: #EEE;
+		border-right: 1px solid #CCC;
+		overflow-y:scroll;
+		float:left;
+		padding:10px;
+	}
+	#body_right{
+		float:left;
+		padding:10px;
+		min-height:100%;
+		background: #F0F0F0;
+	}
+	#menu_left a{
+		color:#666;
+	}
+	</style>
+	</head>
+	<body>
+		<div id="menu_left" ><b></b><ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<b>Common API</b><ul>
+<li><a href="common_api_onpageexec.html">onPageExec</a></li>
+<li><a href="common_api_onpageloadscript.html">onPageLoadScript</a></li>
+</ul>
+</div>
+		<div id="body_right"><h2>chromoon.onPageLoadScript</h2>
+
+<p>將Script載入到Page上<br>
+使用時機大多於Background或是Pop<br>
+範例(於example_bg.js)：  </p>
+
+<pre><code>    chromoon.onPageLoadScript([&#39;example_page.js&#39;]);
+    chromoon.onPageFinished(function(chromoon){
+        example_script_on_page_call();
+    });
+</code></pre>
+
+<p>其中example_page.js有下列function：</p>
+
+<pre><code>    function example_script_on_page_call(){
+        console.log(&#39;here is:example_script_on_page_call&#39;);
+    }
+</code></pre>
+
+<p>所以可以透過此方式在background中呼叫到預先寫好的JavaScript</p>
+</div>
+	</body>
+</html>

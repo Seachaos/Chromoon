@@ -1,0 +1,48 @@
+<html>
+	<head>
+	<style>
+	html, body { height: 100%; width: 100%; margin: 0; background: #F0F0F0; }
+	#menu_left{
+		width:20%;
+		height:100%;
+		background: #EEE;
+		border-right: 1px solid #CCC;
+		overflow-y:scroll;
+		float:left;
+		padding:10px;
+	}
+	#body_right{
+		float:left;
+		padding:10px;
+		min-height:100%;
+		background: #F0F0F0;
+	}
+	#menu_left a{
+		color:#666;
+	}
+	</style>
+	</head>
+	<body>
+		<div id="menu_left" ><b></b><ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<b>Common API</b><ul>
+<li><a href="common_api_onpageexec.html">onPageExec</a></li>
+<li><a href="common_api_onpageloadscript.html">onPageLoadScript</a></li>
+</ul>
+</div>
+		<div id="body_right"><h2>chromoon.onPageExec(function)</h2>
+
+<p>此API為執行function於Page上</p>
+
+<p>範例：  </p>
+
+<pre><code>    chromoon.onPageExec(function(chromoon){
+        alert(&#39;here is call by pop!&#39;);
+    })
+</code></pre>
+
+<p>於background或是pop使用，會alert一個文字在page上</p>
+</div>
+	</body>
+</html>

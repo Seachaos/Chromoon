@@ -1,0 +1,29 @@
+<html>
+	<head>
+	<style>
+	html, body { height: 100%; width: 100%; margin: 0; background: #F0F0F0; }
+	#menu_left{
+		width:20%;
+		height:100%;
+		background: #EEE;
+		border-right: 1px solid #CCC;
+		overflow-y:scroll;
+		float:left;
+		padding:10px;
+	}
+	#body_right{
+		float:left;
+		padding:10px;
+		min-height:100%;
+		background: #F0F0F0;
+	}
+	#menu_left a{
+		color:#666;
+	}
+	</style>
+	</head>
+	<body>
+		<div id="menu_left" >{{menu}}</div>
+		<div id="body_right">{{post}}</div>
+	</body>
+</html>

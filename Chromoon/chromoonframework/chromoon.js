@@ -199,7 +199,11 @@ Chromoon.prototype.notify = function(msg, opt){
 	}
 }
 
-Chromoon.prototype.triggerChange = function(dom){
+Chromoon.prototype.domWatch = function(dom, callback){
+	$(dom).bind("DOMSubtreeModified", callback);
+}
+
+Chromoon.prototype.domTriggerChange = function(dom){
 	var event = document.createEvent("HTMLEvents");
 	event.initEvent('change', true, true);
 	if(dom.length){
