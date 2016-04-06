@@ -36,3 +36,34 @@
 所以可以透過此方式在background中呼叫到預先寫好的JavaScript
 
 
+/#{
+	"name" : "onStateChangeFromListener"
+}#/
+## chromoon.onStateChangeFromListener(function)
+當state有改變(需使用setState) 時會觸發此function，在當前的頁面呼叫setState並不會觸發此function  
+例如在background.js上呼叫setState，不會觸發background.js，但是會觸發 page和 pop上的此事件  
+ 
+
+範例 pop.js
+
+		chromoon.setState({
+			popValue : 'HereIsPOP'
+		});
+
+範例 page.js 
+
+		// 由其他頁面的setState觸發
+		chromoon.onStateChangeFromListener(function(chromoon, state){
+			console.log('STATE CHANGE FROM LISTENER ON PAGE!');
+			console.log(state); // 有來自於page.js 的 popValue
+			chromoon.setState({
+				// 由此通知其他頁面
+				FromPageValue : 'Good'
+			});
+		});
+
+
+
+
+
+
