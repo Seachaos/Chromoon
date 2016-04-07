@@ -1,6 +1,7 @@
 /#{
 	"category" : "Common API",
-	"name" : "onPageExec"
+	"name" : "onPageExec",
+	"escape_html" : true
 }#/
 ## chromoon.onPageExec(function)
 此API為執行function於Page上
@@ -61,6 +62,54 @@
 				FromPageValue : 'Good'
 			});
 		});
+
+/#{
+	"name" : "notify"
+}#/
+## chromoon.notify(msg, opt)  
+顯示Chrome的通知訊息，此功能目前於page上無效，但可以作用於background與pop
+
+範例：
+
+		chromoon.notify('Here is notify from example_bg.js');
+
+
+範例：
+
+		chromoon.notify({
+			title : 'Title',
+			msg : 'here is example message',
+			icon : 'images/ic_info_black_24dp_2x.png',
+			click : function(notify){
+				notify.close();
+			}
+		});
+
+
+
+/#{
+	"name" : "domWatch"
+}#/
+## chromoon.domWatch(dom, function)
+監視DOM是否有變更  
+如果有異動就會觸發function  
+
+範例：  
+
+		chromoon.domWatch($('body'), function(){
+			alert('Body has change!')
+		}
+
+
+
+/#{
+	"name" : "domTriggerChange"
+}#/
+## chromoon.domTriggerChange(dom)
+觸發DOM原生的change事件
+例如 <input onchange="..." />
+就會觸發 onchange事件
+
 
 
 
