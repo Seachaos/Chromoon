@@ -106,9 +106,9 @@
 	"name" : "domTriggerChange"
 }#/
 ## chromoon.domTriggerChange(dom)
-觸發DOM原生的change事件
-例如 <input onchange="..." />
-就會觸發 onchange事件
+觸發DOM原生的change事件  
+例如 <input onchange="..." />  
+就會觸發 onchange事件  
 
 
 
