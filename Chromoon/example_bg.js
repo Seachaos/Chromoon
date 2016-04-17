@@ -19,35 +19,9 @@ SOFTWARE.
 */
 
 // EXAMPLE Background JS
-chromoon.packageName = 'test_example';
-
-chromoon.setState({
-	value_from_bg : 'Hi'
-});
-
-chromoon.onStateChange(function(chromoon, state){
-	console.log('STATE CHANGE!');
-	console.log(state);
-});
-
-chromoon.onStateChangeFromListener(function(chromoon, state){
-	console.log('STATE CHANGE FROM LISTENER!');
-	console.log(state);
-
-
-	// demo for receve action
-	switch(state.action){
-		case 'show_notfiy_on_page':
-			chromoon.notify('Here is notify from example_bg.js');
-			// clear action
-			chromoon.setState({action : 'none' });
-			break;
-	}
-});
 
 /**********************/
 chromoon.onPageLoadScript(['example_page.js']);
 chromoon.onPageFinished(function(chromoon){
 	// this code is run on font, using chromoon.setState for return data
-	console.log('page finished. from bg');
 });

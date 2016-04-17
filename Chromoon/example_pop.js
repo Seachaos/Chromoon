@@ -18,60 +18,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-chromoon.packageName = 'test_example';
+function onfound_h1(h1_array){
+	var content = "";
+	for(i in h1_array){
+		content += h1_array[i] + "\n";
+		console.log('H1:' + h1_array[i]);
+	}
+	chromoon.notify(content);
+}
 
-chromoon.setState({
-	popValue : 'HereIsPOP'
-});
+function modify_page_h1(){
+	chromoon.onPageExec(function(){
+		// this is run on page
+		$('h1').text('Modify by Chromoon');
+	});
+}
 
 chromoon.onPopReady(function(chromoon){
-	
-	$('#test_state_change').click(function(){
+	$('#get_page_h1').click(function(){
 		chromoon.setState({
-			formPop : 'test_state_change'
+			action : 'get_h1'
 		})
 	});
-
-	$('#show_alert_on_page').click(function(){
-		chromoon.notify('XD'); return;
-		chromoon.onPageExec(function(chromoon){
-			alert('here is call by pop!');
-			console.log(chromoon.state);
-		})
+	$('#modify_page_h1').click(function(){
+		modify_page_h1();
 	});
-
-	$('#notify_example').click(function(){
-		chromoon.notify({
-			title : 'Title',
-			msg : 'here is example message',
-			icon : 'images/ic_info_black_24dp_2x.png',
-			click : function(notify){
-				notify.close();
-			}
-		});
-	})
-	$('#notify_example_from_page').click(function(){
-		chromoon.setState(
-			{ action: 'show_notfiy_on_page' }
-		);
-	})
-});
-
-chromoon.onStateChange(function(chromoon, state){
-	console.log('STATE CHANGE!');
-	console.log(state);
 });
 
 chromoon.onStateChangeFromListener(function(chromoon, state){
-	console.log('STATE CHANGE FROM LISTENER!');
-	console.log(state);
-});
-
-
-/**********************/
-chromoon.onPageLoadScript(['example_page.js']);
-chromoon.onPageFinished(function(chromoon){
-	// this code is run on font page, using chromoon.setState for return data
-	console.log('page finished. from pop');
-	example_script_on_page_call();
+	switch(state.action){
+		case 'found_h1':
+			onfound_h1(state.h1_array);
+			chromoon.setState({action:'none'});
+			break;
+	}
 });

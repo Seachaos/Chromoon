@@ -18,22 +18,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-console.log('Here is exmaple_page.js, load by example_bg.js')
-console.log(chromoon);
-
-function example_script_on_page_call(){
-	console.log('here is:example_script_on_page_call');
+// get all h1 tag on page
+function get_page_h1(){
+	var array = [];
+	$('h1').each(function(){
+		array.push($(this).text());
+	});
+	chromoon.setState({action:'found_h1', h1_array:array});
 }
 
-chromoon.onStateChange(function(chromoon, state){
-	console.log('STATE CHANGE ON PAGE!');
-	console.log(state);
-});
-
 chromoon.onStateChangeFromListener(function(chromoon, state){
-	console.log('STATE CHANGE FROM LISTENER ON PAGE!');
-	console.log(state);
-	chromoon.setState({
-		FromPageValue : 'Good'
-	});
+	switch(state.action){
+		case 'get_h1':
+			get_page_h1();
+			break;
+	}
 });
