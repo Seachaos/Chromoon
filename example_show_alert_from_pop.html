@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="./style.css" rel="stylesheet" type="text/css" />
+		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+	</head>
+	<body>
+		<div id="menu_left" ><b></b><ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<b>Common API</b><ul>
+<li><a href="common_api_domtriggerchange.html">domTriggerChange</a></li>
+<li><a href="common_api_domwatch.html">domWatch</a></li>
+<li><a href="common_api_notify.html">notify</a></li>
+<li><a href="common_api_onpageexec.html">onPageExec</a></li>
+<li><a href="common_api_onpageloadscript.html">onPageLoadScript</a></li>
+<li><a href="common_api_onstatechangefromlistener.html">onStateChangeFromListener</a></li>
+</ul>
+<b>Example</b><ul>
+<li><a href="example_example_2_get_h1.html">File H1 and edit in page</a></li>
+<li><a href="example_show_alert_from_pop.html">Show Alert From Pop</a></li>
+</ul>
+<b>Pop API</b><ul>
+<li><a href="pop_api_onpopready.html">onPopReady</a></li>
+</ul>
+</div>
+		<div id="body_right"><h2>Show Alert From Pop to Page</h2>
+
+<p>範例 (example_pop.js)：</p>
+
+<pre><code>    chromoon.onPopReady(function(chromoon){
+        chromoon.onPageExec(function(){
+            alert(&#39;Here is Alert&#39;);
+        });
+    });
+</code></pre>
+
+<p>chromoon.onPopReady 會在pop 載入完成時觸發(類似jQuery的ready)  </p>
+
+<p>chromoon.onPageExec 會將function中的內容在page中執行<br>
+注意：此方法是執行於Page中，所以Pop上的所有Javascript和其無關，如果有變數要傳遞，可以使用 setState 方法</p>
+</div>
+		<script type="text/javascript">
+		$('pre').addClass('prettyprint');
+		</script>
+	</body>
+</html>

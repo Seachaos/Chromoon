@@ -1,0 +1,135 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="./style.css" rel="stylesheet" type="text/css" />
+		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+	</head>
+	<body>
+		<div id="menu_left" ><b></b><ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<b>Common API</b><ul>
+<li><a href="common_api_domtriggerchange.html">domTriggerChange</a></li>
+<li><a href="common_api_domwatch.html">domWatch</a></li>
+<li><a href="common_api_notify.html">notify</a></li>
+<li><a href="common_api_onpageexec.html">onPageExec</a></li>
+<li><a href="common_api_onpageloadscript.html">onPageLoadScript</a></li>
+<li><a href="common_api_onstatechangefromlistener.html">onStateChangeFromListener</a></li>
+</ul>
+<b>Example</b><ul>
+<li><a href="example_example_2_get_h1.html">File H1 and edit in page</a></li>
+<li><a href="example_show_alert_from_pop.html">Show Alert From Pop</a></li>
+</ul>
+<b>Pop API</b><ul>
+<li><a href="pop_api_onpopready.html">onPopReady</a></li>
+</ul>
+</div>
+		<div id="body_right"><h1>Example Get H1 介紹</h1>
+
+<p>本範例程式可以從 <a href="https://github.com/Seachaos/Chromoon/tree/example_get_h1/Chromoon">GitHub上取得</a><br>
+(<a href="https://github.com/Seachaos/Chromoon/tree/example_get_h1/Chromoon">https://github.com/Seachaos/Chromoon/tree/example_get_h1/Chromoon</a>)<br>
+主要有三個部份  </p>
+
+<ul>
+<li>example_bg.js</li>
+<li>example_pop.js</li>
+<li>example_page.js</li>
+</ul>
+
+<p>主要是示範如何取得使用者正在觀看的頁面(page)上所有h1 tag與修改內容</p>
+
+<h2>example_bg.js</h2>
+
+<p>此為背景執行的JS，在此範例中負責在Page載入頁面完成時掛載上我們的 example_page.js</p>
+
+<pre><code>    chromoon.onPageLoadScript([&#39;example_page.js&#39;]);
+    chromoon.onPageFinished(function(chromoon){
+        // this code is run on font, using chromoon.setState for return data
+    });
+</code></pre>
+
+<h2>example_pop.js</h2>
+
+<p>此為Chrome plugin彈出對話框的JS部份<br>
+以下程式碼是在Pop準備好時註冊click事件  </p>
+
+<pre><code>    chromoon.onPopReady(function(chromoon){
+        $(&#39;#get_page_h1&#39;).click(function(){
+            chromoon.setState({ // note1
+                action : &#39;get_h1&#39;
+            })
+        });
+        $(&#39;#modify_page_h1&#39;).click(function(){
+            modify_page_h1();  // note2
+        });
+    });
+</code></pre>
+
+<p>note1： 透過 setState 的方式來通知page要執行事件<br>
+note2： 執行修改page上h1的方法，內容如下  </p>
+
+<pre><code>    function modify_page_h1(){
+        chromoon.onPageExec(function(){
+            // 此部份JS是執行在JS上的，和pop無關
+            $(&#39;h1&#39;).text(&#39;Modify by Chromoon&#39;);
+        });
+    }
+</code></pre>
+
+<p>另外因為note1部份，會需要等待page回報結果，所以也有以下程式碥</p>
+
+<pre><code>    // 監聽從其他頁面 setState 來的變化
+    chromoon.onStateChangeFromListener(function(chromoon, state){
+        switch(state.action){ // 從 action來判定動作
+            case &#39;found_h1&#39;:
+                onfound_h1(state.h1_array); // 顯示出page回報的h1_array  
+                chromoon.setState({action:&#39;none&#39;}); // 將 action 重置 (避免重複觸發)
+                break;
+        }
+    });
+</code></pre>
+
+<p>onfound_h1 是顯示資料用</p>
+
+<pre><code>    function onfound_h1(h1_array){
+        var content = &quot;&quot;;
+        for(i in h1_array){
+            content += h1_array[i] + &quot;\n&quot;;
+            console.log(&#39;H1:&#39; + h1_array[i]);
+        }
+        chromoon.notify(content);
+    }
+</code></pre>
+
+<h2>example_page.js</h2>
+
+<p>此為頁面上所執行的JS</p>
+
+<pre><code>    chromoon.onStateChangeFromListener(function(chromoon, state){
+        switch(state.action){
+            case &#39;get_h1&#39;: // 監聽送來的action, 如果是 get_h1就執行 get_page_h1();
+                get_page_h1();
+                break;
+        }
+    });
+</code></pre>
+
+<p>get_page_h1 部份：</p>
+
+<pre><code>    function get_page_h1(){
+        var array = [];
+        // 使用 JQuery來取得所有h1 tag的內文
+        $(&#39;h1&#39;).each(function(){
+            array.push($(this).text());
+        });
+        // 將事件與資料送至state, 這邊會呼叫其他的 onStateChangeFromListener
+        chromoon.setState({action:&#39;found_h1&#39;, h1_array:array});
+    }
+</code></pre>
+</div>
+		<script type="text/javascript">
+		$('pre').addClass('prettyprint');
+		</script>
+	</body>
+</html>

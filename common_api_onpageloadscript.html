@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="./style.css" rel="stylesheet" type="text/css" />
+		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+	</head>
+	<body>
+		<div id="menu_left" ><b></b><ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<b>Common API</b><ul>
+<li><a href="common_api_domtriggerchange.html">domTriggerChange</a></li>
+<li><a href="common_api_domwatch.html">domWatch</a></li>
+<li><a href="common_api_notify.html">notify</a></li>
+<li><a href="common_api_onpageexec.html">onPageExec</a></li>
+<li><a href="common_api_onpageloadscript.html">onPageLoadScript</a></li>
+<li><a href="common_api_onstatechangefromlistener.html">onStateChangeFromListener</a></li>
+</ul>
+<b>Example</b><ul>
+<li><a href="example_example_2_get_h1.html">File H1 and edit in page</a></li>
+<li><a href="example_show_alert_from_pop.html">Show Alert From Pop</a></li>
+</ul>
+<b>Pop API</b><ul>
+<li><a href="pop_api_onpopready.html">onPopReady</a></li>
+</ul>
+</div>
+		<div id="body_right"><h2>chromoon.onPageLoadScript</h2>
+
+<p>將Script載入到Page上<br>
+使用時機大多於Background或是Pop<br>
+範例(於example_bg.js)：  </p>
+
+<pre><code>    chromoon.onPageLoadScript([&#39;example_page.js&#39;]);
+    chromoon.onPageFinished(function(chromoon){
+        example_script_on_page_call();
+    });
+</code></pre>
+
+<p>其中example_page.js有下列function：</p>
+
+<pre><code>    function example_script_on_page_call(){
+        console.log(&#39;here is:example_script_on_page_call&#39;);
+    }
+</code></pre>
+
+<p>所以可以透過此方式在background中呼叫到預先寫好的JavaScript</p>
+</div>
+		<script type="text/javascript">
+		$('pre').addClass('prettyprint');
+		</script>
+	</body>
+</html>
