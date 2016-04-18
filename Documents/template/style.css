@@ -35,6 +35,13 @@ ul{
 	float:left;
 	padding:10px;
 }
+#menu_right_footer{
+	font-size : 0.8em;
+	text-align: center;
+	margin-top: 30px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
 #body_right{
 	float:left;
 	padding:10px 10px 10px 20px;
